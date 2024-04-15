@@ -1,5 +1,7 @@
 import { useState } from "react"
 import QuestionCard from "./components/QuestionCard"
+import { fetchQuestions} from "./API"
+
 function App() {
 
   const totalQuestions: number = 12
@@ -10,6 +12,8 @@ function App() {
   const [userAnswers, setUserAnswers] = useState([])
   const [score, setScore] = useState(0)
   const [gameOver, setGameOver] = useState(true)
+
+  console.log(fetchQuestions(totalQuestions, "easy"))
 
   const startTrivia = async () => {
     //API call  
