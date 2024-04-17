@@ -4,7 +4,7 @@ import { QuestionState, fetchQuestions } from "./API"
 type Answer = {
   question: string;
   userAnswer: string;
-  correct: boolean;
+  isCorrect: boolean;
   correctAnswer: string;
 }
 
@@ -27,7 +27,7 @@ function App() {
     setLoading(true);
     setGameOver(false);
     try {
-      const newQuestions = await fetchQuestions(totalQuestions, "medium")      
+      const newQuestions = await fetchQuestions(totalQuestions, "medium")
       setQuestions(newQuestions);
       setScore(0);
       setUserAnswers([]);
@@ -41,6 +41,21 @@ function App() {
 
   const checkAnswer = (e: React.MouseEvent): void => {
     //Triggered when the user clicks an answer
+    if (!gameOver){
+      //Get text from user's selecter answer
+      const userAnswer = e.currentTarget.firstChild?.textContent as string
+      //if correct, increase score
+      const isCorrect = questions[questionNbr].correct_answer === userAnswer
+      if (isCorrect) setScore(score + 1)
+      // Save answer in the user answer's array
+      const newAnswer: Answer = {
+        question: questions[questionNbr].question,
+        userAnswer,
+        isCorrect: isCorrect,
+        correctAnswer: questions[questionNbr].correct_answer
+      }
+      setUserAnswers(prevAnswers => prevAnswers.push(newAnswer))
+    }
   }
 
   const nextQuestion = (): void => {
@@ -56,15 +71,18 @@ function App() {
         }
         {!gameOver && <p>Score</p>}
         {loading && <p>Loading Questions...</p>}
-        {/* <QuestionCard
+        {!loading && !gameOver && <QuestionCard
           questionNbr={questionNbr + 1}
           totalQuestions={totalQuestions}
           question={questions[questionNbr].question}
           answers={questions[questionNbr].answers}
           userAnswer={userAnswers ? userAnswers[questionNbr] : undefined}
           callback={checkAnswer}
-        /> */}
-        <button className="" onClick={nextQuestion}>Next Question</button>
+        />}
+        {!gameOver && !loading
+          && userAnswers.length == questionNbr + 1 //show next question if user inputs an answer
+          && questionNbr !== totalQuestions - 1 //show next question if it's not the last
+          && <button className="" onClick={nextQuestion}>Next Question</button>}
       </section>
     </main>
   )
