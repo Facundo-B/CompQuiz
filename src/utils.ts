@@ -1,0 +1,1 @@
+export const shuffleAnswers = (answers: any[]): any[] => [...answers].sort(() => Math.random() - 0.5);
