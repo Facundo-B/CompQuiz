@@ -43,10 +43,19 @@ function App() {
     //Triggered when the user clicks an answer
     if (!gameOver) {
       //Get text from user's selecter answer
-      const userAnswer = e.currentTarget.firstChild?.textContent as string
+      const userAnswer: string = e.currentTarget.firstElementChild?.textContent as string
+      //Mark user answer
+      e.currentTarget.firstElementChild?.parentElement?.classList.add("border-4", "border-teal-500")
       //if correct, increase score
-      const isCorrect = questions[questionNbr].correct_answer === userAnswer
+      const isCorrect: boolean = questions[questionNbr].correct_answer === userAnswer
       if (isCorrect) setScore(score + 1)
+      //color options
+      const optionsDiv: HTMLElement = document.getElementById('options-div') as HTMLElement
+      for (const option of optionsDiv.children) {
+        option.firstChild?.textContent == questions[questionNbr].correct_answer
+          ? option.firstElementChild?.classList.add("btn-correct")
+          : option.firstElementChild?.classList.add("btn-incorrect")
+      }
       // Save answer in the user answer's array
       const newAnswer: Answer = {
         question: questions[questionNbr].question,
@@ -92,7 +101,7 @@ function App() {
           && userAnswers.length == questionNbr + 1 //show next question button if user inputs an answer
           && questionNbr !== totalQuestions - 1 //show next question button if it's not the last
           ? 'visible' : 'invisible'} w-fit rounded-full`} onClick={nextQuestion}>Next Question</button>
-    </section>
+      </section>
     </main >
   )
 }
