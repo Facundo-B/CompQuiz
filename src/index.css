@@ -13,6 +13,24 @@
 
 @layer components {
   button {
-    @apply min-w-[250px] bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow
+    @apply w-[250px]
+     bg-white 
+     hover:bg-gray-100 
+     text-gray-800 
+     font-semibold 
+     py-2 
+     px-4 
+     border 
+     border-gray-400 
+     rounded 
+     shadow
+  }
+
+  .btn-correct {
+    @apply btn bg-lime-500 
+  }
+
+  .btn-incorrect {
+    @apply btn bg-red-500 
   }
 }

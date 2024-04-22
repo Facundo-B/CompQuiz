@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { QuestionState, fetchQuestions } from "./API"
 
-type Answer = {
+export type Answer = {
   question: string;
   userAnswer: string;
   isCorrect: boolean;
@@ -41,7 +41,7 @@ function App() {
 
   const checkAnswer = (e: React.MouseEvent): void => {
     //Triggered when the user clicks an answer
-    if (!gameOver){
+    if (!gameOver) {
       //Get text from user's selecter answer
       const userAnswer = e.currentTarget.firstChild?.textContent as string
       //if correct, increase score
@@ -71,27 +71,29 @@ function App() {
 
   return (
     <main className="relative">
-      <section>
-        <h1>CompQuiz</h1>
+      <section className="font-catamaran relative h-screen w-full flex flex-col justify-center items-center">
+        <h1 className="text-3xl mb-3">CompQuiz</h1>
         {
           (gameOver || userAnswers.length === totalQuestions) && <button onClick={startTrivia}>Start</button>
         }
-        {!gameOver && <p>Score</p>}
+        {(gameOver || userAnswers.length === totalQuestions) && <p className="text-3xl mt-6">Your score is: {score}</p>}
         {loading && <p>Loading Questions...</p>}
-        {!loading && !gameOver && <QuestionCard
+
+        {!loading && !gameOver && !(userAnswers.length === totalQuestions) && <QuestionCard
           questionNbr={questionNbr + 1}
           totalQuestions={totalQuestions}
           question={questions[questionNbr].question}
-          answers={questions[questionNbr].answers}
+          options={questions[questionNbr].answers}
           userAnswer={userAnswers ? userAnswers[questionNbr] : undefined}
           callback={checkAnswer}
         />}
-        {!gameOver && !loading
+
+        <button className={`${!gameOver && !loading
           && userAnswers.length == questionNbr + 1 //show next question button if user inputs an answer
           && questionNbr !== totalQuestions - 1 //show next question button if it's not the last
-          && <button className="" onClick={nextQuestion}>Next Question</button>}
-      </section>
-    </main>
+          ? 'visible' : 'invisible'} w-fit rounded-full`} onClick={nextQuestion}>Next Question</button>
+    </section>
+    </main >
   )
 }
 
