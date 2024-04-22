@@ -1,6 +1,6 @@
 import React from 'react'
 
-interface Props {
+type Props = {
     question: string;
     questionNbr: number;
     totalQuestions: number;

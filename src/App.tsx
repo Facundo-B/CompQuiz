@@ -54,11 +54,18 @@ function App() {
         isCorrect: isCorrect,
         correctAnswer: questions[questionNbr].correct_answer
       }
-      setUserAnswers(prevAnswers => prevAnswers.push(newAnswer))
+      setUserAnswers(prevAnswers => [...prevAnswers, newAnswer])
     }
   }
 
   const nextQuestion = (): void => {
+    //Move to next question, if it's not the last
+    const next = questionNbr + 1;
+    if (next === totalQuestions) {
+      setGameOver(true);
+    } else {
+      setQuestionNbr(next)
+    }
 
   }
 
@@ -80,8 +87,8 @@ function App() {
           callback={checkAnswer}
         />}
         {!gameOver && !loading
-          && userAnswers.length == questionNbr + 1 //show next question if user inputs an answer
-          && questionNbr !== totalQuestions - 1 //show next question if it's not the last
+          && userAnswers.length == questionNbr + 1 //show next question button if user inputs an answer
+          && questionNbr !== totalQuestions - 1 //show next question button if it's not the last
           && <button className="" onClick={nextQuestion}>Next Question</button>}
       </section>
     </main>
