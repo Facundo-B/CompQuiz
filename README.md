@@ -14,6 +14,6 @@ Responsive quiz game styled with TailwindCSS.
 
 ---
 
-### :link: Deployed at https://nike-landing.onrender.com
+### :link: Deployed at https://react-ts-quizapp.onrender.com
 
-https://react-ts-quizapp.onrender.com
+
