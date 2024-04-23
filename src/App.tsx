@@ -1,6 +1,9 @@
 import { useState } from "react"
 import { QuestionState, fetchQuestions } from "./API"
 
+//Components
+import QuestionCard from "./components/QuestionCard"
+
 export type Answer = {
   question: string;
   userAnswer: string;
@@ -8,16 +11,13 @@ export type Answer = {
   correctAnswer: string;
 }
 
-//Components
-import QuestionCard from "./components/QuestionCard"
-
 function App() {
 
   const totalQuestions: number = 12
 
   const [loading, setLoading] = useState(false)
   const [questions, setQuestions] = useState<QuestionState[]>([])
-  const [questionNbr, setQuestionNbr] = useState(0)
+  const [questionIdx, setQuestionIdx] = useState(0)
   const [userAnswers, setUserAnswers] = useState<Answer[]>([])
   const [score, setScore] = useState(0)
   const [gameOver, setGameOver] = useState(true)
@@ -31,7 +31,7 @@ function App() {
       setQuestions(newQuestions);
       setScore(0);
       setUserAnswers([]);
-      setQuestionNbr(0);
+      setQuestionIdx(0);
       setLoading(false)
     } catch (error: any) {
       return error instanceof Error ? error.message : error
@@ -45,23 +45,23 @@ function App() {
       //Get text from user's selecter answer
       const userAnswer: string = e.currentTarget.firstElementChild?.textContent as string
       //Mark user answer
-      e.currentTarget.firstElementChild?.parentElement?.classList.add("border-4", "border-teal-500")
+      e.currentTarget.parentElement?.classList.replace("border-transparent", "border-teal-500")
       //if correct, increase score
-      const isCorrect: boolean = questions[questionNbr].correct_answer === userAnswer
+      const isCorrect: boolean = questions[questionIdx].correct_answer === userAnswer
       if (isCorrect) setScore(score + 1)
       //color options
       const optionsDiv: HTMLElement = document.getElementById('options-div') as HTMLElement
       for (const option of optionsDiv.children) {
-        option.firstChild?.textContent == questions[questionNbr].correct_answer
+        option.firstChild?.textContent == questions[questionIdx].correct_answer
           ? option.firstElementChild?.classList.add("btn-correct")
           : option.firstElementChild?.classList.add("btn-incorrect")
       }
       // Save answer in the user answer's array
       const newAnswer: Answer = {
-        question: questions[questionNbr].question,
+        question: questions[questionIdx].question,
         userAnswer,
         isCorrect: isCorrect,
-        correctAnswer: questions[questionNbr].correct_answer
+        correctAnswer: questions[questionIdx].correct_answer
       }
       setUserAnswers(prevAnswers => [...prevAnswers, newAnswer])
     }
@@ -69,11 +69,11 @@ function App() {
 
   const nextQuestion = (): void => {
     //Move to next question, if it's not the last
-    const next = questionNbr + 1;
+    const next = questionIdx + 1;
     if (next === totalQuestions) {
       setGameOver(true);
     } else {
-      setQuestionNbr(next)
+      setQuestionIdx(next)
     }
 
   }
@@ -83,24 +83,24 @@ function App() {
       <section className="font-catamaran relative h-screen w-full flex flex-col justify-center items-center">
         <h1 className="text-3xl mb-3">CompQuiz</h1>
         {
-          (gameOver || userAnswers.length === totalQuestions) && <button onClick={startTrivia}>Start</button>
+          gameOver && <button onClick={startTrivia}>Start</button>
         }
-        {(gameOver || userAnswers.length === totalQuestions) && <p className="text-3xl mt-6">Your score is: {score}</p>}
+        {gameOver && userAnswers.length === totalQuestions && <p className="text-3xl mt-6">Your score is: {score}</p>}
         {loading && <p>Loading Questions...</p>}
 
-        {!loading && !gameOver && !(userAnswers.length === totalQuestions) && <QuestionCard
-          questionNbr={questionNbr + 1}
+        {!loading && !gameOver && <QuestionCard
+          questionIdx={questionIdx + 1}
           totalQuestions={totalQuestions}
-          question={questions[questionNbr].question}
-          options={questions[questionNbr].answers}
-          userAnswer={userAnswers ? userAnswers[questionNbr] : undefined}
+          question={questions[questionIdx].question}
+          options={questions[questionIdx].answers}
+          userAnswer={userAnswers ? userAnswers[questionIdx] : undefined}
           callback={checkAnswer}
         />}
 
         <button className={`${!gameOver && !loading
-          && userAnswers.length == questionNbr + 1 //show next question button if user inputs an answer
-          && questionNbr !== totalQuestions - 1 //show next question button if it's not the last
-          ? 'visible' : 'invisible'} w-fit rounded-full`} onClick={nextQuestion}>Next Question</button>
+          && userAnswers.length == questionIdx + 1 //show next question button if user inputs an answer
+          // && questionIdx !== totalQuestions - 1 //show next question button if it's not the last
+          ? 'visible' : 'invisible'} w-fit rounded-full`} onClick={nextQuestion}>Next</button>
       </section>
     </main >
   )
