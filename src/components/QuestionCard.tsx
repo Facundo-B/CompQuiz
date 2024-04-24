@@ -18,7 +18,7 @@ const QuestionCard: React.FC<Props> = ({ question, questionIdx, totalQuestions, 
             <div id='options-div' className='flex flex-col gap-3'>
                 {options.map((option) => (
                     <div className="text-lg rounded border-2 border-transparent" key={option}>
-                        <button className='btn' disabled={!!userAnswer} onClick={callback}>
+                        <button disabled={!!userAnswer} onClick={callback}>
                             <span dangerouslySetInnerHTML={{ __html: option }} />
                         </button>
                     </div>
