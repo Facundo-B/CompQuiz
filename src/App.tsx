@@ -11,6 +11,8 @@ export type Answer = {
   correctAnswer: string;
 }
 
+export type Difficulty = "easy" | "medium" | "hard"
+
 function App() {
 
   const totalQuestions: number = 12
@@ -21,6 +23,7 @@ function App() {
   const [userAnswers, setUserAnswers] = useState<Answer[]>([])
   const [score, setScore] = useState(0)
   const [gameOver, setGameOver] = useState(true)
+  const [difficulty, setDifficulty] = useState<Difficulty>("medium")
 
 
   const startTrivia = async (): Promise<void | string> => {
@@ -28,7 +31,7 @@ function App() {
     setLoading(true);
     setGameOver(false);
     try {
-      const newQuestions = await fetchQuestions(totalQuestions, "medium")
+      const newQuestions = await fetchQuestions(totalQuestions, difficulty)
       setQuestions(newQuestions);
       setScore(0);
       setUserAnswers([]);
@@ -86,7 +89,8 @@ function App() {
         {gameOver
           && <><div className="flex items-center my-4">
             <span className="mr-2">Choose difficulty: </span>
-            <select className="border border-gray-400 rounded" name="selected-difficulty" defaultValue={"medium"}>
+            <select className="shadow border border-gray-400 rounded" name="selected-difficulty" 
+            value={difficulty} onChange={e => setDifficulty(e.target.value as Difficulty)}>
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>
               <option value="hard">Hard</option>

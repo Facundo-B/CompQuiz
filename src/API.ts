@@ -1,5 +1,7 @@
 import { shuffleAnswers } from "./utils";
 
+import { Difficulty } from "./App";
+
 
 export type Question = {
     type: string;
@@ -11,8 +13,6 @@ export type Question = {
 }
 
 export type QuestionState = Question & { answers: string[]; }
-
-export type Difficulty = "easy" | "medium" | "hard"
 
 export const fetchQuestions = async (amount: number, difficulty: Difficulty) => {
 
