@@ -22,6 +22,7 @@ function App() {
   const [score, setScore] = useState(0)
   const [gameOver, setGameOver] = useState(true)
 
+
   const startTrivia = async (): Promise<void | string> => {
     //API call
     setLoading(true);
@@ -81,9 +82,17 @@ function App() {
   return (
     <main className="relative">
       <section className="font-catamaran relative h-screen w-full flex flex-col justify-center items-center">
-        <h1 className="text-3xl mb-3">CompQuiz</h1>
-        {
-          gameOver && <button onClick={startTrivia}>Start</button>
+        <h1 className="text-3xl">CompQuiz</h1>
+        {gameOver
+          && <><div className="flex items-center my-4">
+            <span className="mr-2">Choose difficulty: </span>
+            <select className="border border-gray-400 rounded" name="selected-difficulty" defaultValue={"medium"}>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+            <button onClick={startTrivia}>Start</button></>
         }
         {gameOver && userAnswers.length === totalQuestions && <p className="text-3xl mt-6">Your score is: {score}</p>}
         {loading && <p>Loading Questions...</p>}
