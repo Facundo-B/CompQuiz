@@ -99,7 +99,7 @@ function App() {
       <section className="font-catamaran relative h-screen w-full dark:bg-slate-900 dark:text-white transition-colors duration-200 flex flex-col">
         <div>
           <button onClick={toggleDarkMode} className="rounded-full mt-5 ml-5 w-[50px] h-[30px] p-1 sm:w-[80px] sm:h-[40px]">
-            <img src="public/darkmode-icon.svg" className="object-contain w-full h-full" alt="" />
+            <img src="/darkmode-icon.svg" className="object-contain w-full h-full" alt="" />
           </button>
         </div>
 
