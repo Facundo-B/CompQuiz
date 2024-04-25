@@ -26,7 +26,7 @@ function App() {
   const [score, setScore] = useState(0)
   const [gameOver, setGameOver] = useState(true)
   const [difficulty, setDifficulty] = useState<Difficulty>("medium")
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState<boolean>(localStorage.dark);
 
 
   const startTrivia = async (): Promise<void | string> => {
@@ -86,12 +86,12 @@ function App() {
   }
 
   useEffect(() => {
+    document.body.classList.toggle("dark");
     localStorage.dark = dark
   }, [dark])
 
   const toggleDarkMode = () => {
     setDark(!dark);
-    document.body.classList.toggle("dark");
   }
 
   return (
