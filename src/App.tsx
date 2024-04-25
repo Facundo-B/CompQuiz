@@ -28,6 +28,9 @@ function App() {
   const [difficulty, setDifficulty] = useState<Difficulty>("medium")
   const [dark, setDark] = useState<boolean>(localStorage.dark);
 
+  const [firstRender, setFirstRender] = useState(true);
+
+
 
   const startTrivia = async (): Promise<void | string> => {
     //API call
@@ -86,8 +89,12 @@ function App() {
   }
 
   useEffect(() => {
+    if(firstRender){
+      setFirstRender(false);
+      return;
+    }
     localStorage.dark = dark
-  }, [dark])
+}, [dark]);
 
   const toggleDarkMode = () => {
     setDark(!dark);
