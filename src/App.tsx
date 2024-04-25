@@ -86,7 +86,6 @@ function App() {
   }
 
   useEffect(() => {
-    document.body.classList.toggle("dark");
     localStorage.dark = dark
   }, [dark])
 
@@ -95,7 +94,7 @@ function App() {
   }
 
   return (
-    <main className="relative">
+    <main className={`${dark ? "dark" : ""} relative`} >
       <section className="font-catamaran relative h-screen w-full dark:bg-slate-900 dark:text-white transition-colors duration-200 flex flex-col">
         <div>
           <button onClick={toggleDarkMode} className="rounded-full mt-5 ml-5 w-[50px] h-[30px] p-1 sm:w-[80px] sm:h-[40px]">
