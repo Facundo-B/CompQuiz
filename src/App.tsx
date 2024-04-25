@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { QuestionState, fetchQuestions } from "./API"
 
 //Components
@@ -17,6 +17,8 @@ function App() {
 
   const totalQuestions: number = 12
 
+
+  //State
   const [loading, setLoading] = useState(false)
   const [questions, setQuestions] = useState<QuestionState[]>([])
   const [questionIdx, setQuestionIdx] = useState(0)
@@ -24,6 +26,7 @@ function App() {
   const [score, setScore] = useState(0)
   const [gameOver, setGameOver] = useState(true)
   const [difficulty, setDifficulty] = useState<Difficulty>("medium")
+  const [dark, setDark] = useState(false);
 
 
   const startTrivia = async (): Promise<void | string> => {
@@ -82,38 +85,55 @@ function App() {
 
   }
 
+  useEffect(() => {
+    localStorage.dark = dark
+  }, [dark])
+
+
+
+  const toggleDarkMode = () => {
+    setDark(!dark);
+    document.body.classList.toggle("dark");
+  }
+
+
   return (
     <main className="relative">
-      <section className="font-catamaran relative h-screen w-full flex flex-col justify-center items-center">
-        <h1 className="text-3xl">CompQuiz</h1>
-        {gameOver
-          && <><div className="flex items-center my-4">
-            <span className="mr-2">Choose difficulty: </span>
-            <select className="shadow border border-gray-400 rounded" name="selected-difficulty" 
-            value={difficulty} onChange={e => setDifficulty(e.target.value as Difficulty)}>
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </div>
-            <button onClick={startTrivia}>Start</button></>
-        }
-        {gameOver && userAnswers.length === totalQuestions && <p className="text-3xl mt-6">Your score is: {score}</p>}
-        {loading && <p>Loading Questions...</p>}
+      <section className="font-catamaran relative h-screen w-full dark:bg-slate-900 dark:text-white transition-colors duration-200">
+        <button onClick={toggleDarkMode} className="">
+          {dark ? 'Light Mode' : 'Dark Mode'}
+        </button>
+        <div className="flex flex-col justify-center items-center">
+          <h1 className="text-3xl">CompQuiz</h1>
+          {gameOver
+            && <><div className="flex items-center my-4">
+              <span className="mr-2">Choose difficulty: </span>
+              <select className="shadow border border-gray-400 rounded dark:bg-slate-900 dark:text-white" name="selected-difficulty"
+                value={difficulty} onChange={e => setDifficulty(e.target.value as Difficulty)}>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
+              <button onClick={startTrivia}>Start</button></>
+          }
+          {gameOver && userAnswers.length === totalQuestions && <p className="text-3xl mt-6">Your score is: {score}</p>}
+          {loading && <p>Loading Questions...</p>}
 
-        {!loading && !gameOver && <QuestionCard
-          questionIdx={questionIdx + 1}
-          totalQuestions={totalQuestions}
-          question={questions[questionIdx].question}
-          options={questions[questionIdx].answers}
-          userAnswer={userAnswers ? userAnswers[questionIdx] : undefined}
-          callback={checkAnswer}
-        />}
+          {!loading && !gameOver && <QuestionCard
+            questionIdx={questionIdx + 1}
+            totalQuestions={totalQuestions}
+            question={questions[questionIdx].question}
+            options={questions[questionIdx].answers}
+            userAnswer={userAnswers ? userAnswers[questionIdx] : undefined}
+            callback={checkAnswer}
+          />}
 
-        <button className={`${!gameOver && !loading
-          && userAnswers.length == questionIdx + 1 //show next question button if user inputs an answer
-          // && questionIdx !== totalQuestions - 1 //show next question button if it's not the last
-          ? 'visible' : 'invisible'} w-fit rounded-full`} onClick={nextQuestion}>Next</button>
+          <button className={`${!gameOver && !loading
+            && userAnswers.length == questionIdx + 1 //show next question button if user inputs an answer
+            // && questionIdx !== totalQuestions - 1 //show next question button if it's not the last
+            ? 'visible' : 'invisible'} w-fit rounded-full `} onClick={nextQuestion}>Next</button>
+        </div>
       </section>
     </main >
   )
