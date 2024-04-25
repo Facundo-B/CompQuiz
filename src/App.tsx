@@ -89,21 +89,21 @@ function App() {
     localStorage.dark = dark
   }, [dark])
 
-
-
   const toggleDarkMode = () => {
     setDark(!dark);
     document.body.classList.toggle("dark");
   }
 
-
   return (
     <main className="relative">
-      <section className="font-catamaran relative h-screen w-full dark:bg-slate-900 dark:text-white transition-colors duration-200">
-        <button onClick={toggleDarkMode} className="">
-          {dark ? 'Light Mode' : 'Dark Mode'}
-        </button>
-        <div className="flex flex-col justify-center items-center">
+      <section className="font-catamaran relative h-screen w-full dark:bg-slate-900 dark:text-white transition-colors duration-200 flex flex-col">
+        <div>
+          <button onClick={toggleDarkMode} className="rounded-full mt-5 ml-5 w-[50px] h-[30px] p-1 sm:w-[80px] sm:h-[40px]">
+            <img src="public/darkmode-icon.svg" className="object-contain w-full h-full" alt="" />
+          </button>
+        </div>
+
+        <div className="flex flex-col justify-center items-center h-screen">
           <h1 className="text-3xl">CompQuiz</h1>
           {gameOver
             && <><div className="flex items-center my-4">

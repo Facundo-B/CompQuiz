@@ -9,6 +9,10 @@ export default {
       fontFamily: {
         catamaran: ['Catamaran', 'sans-serif'],
       },
+      backgroundImage : {
+        'clear-bulb': "url('../public/lightbulb-icon-light.svg')",
+        'fill-bulb': "url('../public/lightbulb-icon-dark.svg')",
+      }
     },
   },
   plugins: [],
