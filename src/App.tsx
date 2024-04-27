@@ -26,7 +26,7 @@ function App() {
   const [score, setScore] = useState(0)
   const [gameOver, setGameOver] = useState(true)
   const [difficulty, setDifficulty] = useState<Difficulty>("medium")
-  const [dark, setDark] = useState<boolean>(JSON.parse(localStorage.dark));
+  const [dark, setDark] = localStorage.dark ? useState<boolean>(JSON.parse(localStorage.dark)) :  useState<boolean>(false);
 
   const startTrivia = async (): Promise<void | string> => {
     //API call
