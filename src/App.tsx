@@ -115,7 +115,7 @@ function App() {
             </div>
               <button onClick={startTrivia}>Start</button></>
           }
-          {gameOver && userAnswers.length === totalQuestions && <p className="text-3xl mt-6">Your score is: {score}</p>}
+          {gameOver && userAnswers.length === totalQuestions && <p className="text-3xl mt-6">Your score is: <span className="animate-fadeUp" style={{animationDelay: "1.5s"}}>{score}</span></p>}
           {loading && <p>Loading Questions...</p>}
 
           {!loading && !gameOver && <QuestionCard
