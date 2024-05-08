@@ -1,6 +1,6 @@
 ## :information_source: Description
 
-Responsive quiz game styled with TailwindCSS.
+Responsive quiz game styled with TailwindCSS, featuring a persisting dark mode switch.
 
 ---
 
